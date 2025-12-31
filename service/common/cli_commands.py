@@ -16,6 +16,11 @@ def db_create():
     Recreates a local database. You probably should not use this on
     production. ;-)
     """
+    print("Running drop_all")
     db.drop_all()
+    
+    print("Running create_all")
     db.create_all()
+
+    print("Running session.commit")
     db.session.commit()
