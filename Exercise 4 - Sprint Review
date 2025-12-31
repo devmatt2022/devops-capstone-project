@@ -1,0 +1,105 @@
+(venv) theia:project$ curl -i -X POST http://127.0.0.1:5000/accounts \
+-H "Content-Type: application/json" \
+-d '{"name":"John Doe","email":"john@doe.com","address":"123 Main St.","phone_number":"555-1212"}'
+HTTP/1.1 201 CREATED
+Server: gunicorn
+Date: Wed, 31 Dec 2025 19:55:58 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 128
+Location: /
+
+{"address":"123 Main St.","date_joined":"2025-12-31","email":"john@doe.com","id":1,"name":"John Doe","phone_number":"555-1212"}
+(venv) theia:project$ 
+
+
+
+
+
+(venv) theia:project$ curl -i -X GET http://127.0.0.1:5000/accounts
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Wed, 31 Dec 2025 19:57:25 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 130
+
+[{"address":"123 Main St.","date_joined":"2025-12-31","email":"john@doe.com","id":1,"name":"John Doe","phone_number":"555-1212"}]
+(venv) theia:project$ 
+
+
+
+
+
+(venv) theia:project$ curl -i -X GET http://127.0.0.1:5000/accounts/1
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Wed, 31 Dec 2025 19:57:37 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 128
+
+{"address":"123 Main St.","date_joined":"2025-12-31","email":"john@doe.com","id":1,"name":"John Doe","phone_number":"555-1212"}
+(venv) theia:project$ 
+
+
+
+
+
+
+(venv) theia:project$ curl -i -X PUT http://127.0.0.1:5000/accounts/1 \
+-H "Content-Type: application/json" \
+-d '{"name":"John Doe","email":"john@doe.com","address":"123 Main St.","phone_number":"555-1111"}'
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Wed, 31 Dec 2025 19:57:50 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 128
+
+{"address":"123 Main St.","date_joined":"2025-12-31","email":"john@doe.com","id":1,"name":"John Doe","phone_number":"555-1111"}
+(venv) theia:project$ 
+
+
+
+
+(venv) theia:project$ curl -i -X DELETE http://127.0.0.1:5000/accounts/1
+HTTP/1.1 204 NO CONTENT
+Server: gunicorn
+Date: Wed, 31 Dec 2025 19:58:06 GMT
+Connection: close
+Content-Type: text/html; charset=utf-8
+
+(venv) theia:project$ 
+
+
+
+
+
+(venv) theia:project$ curl -i -X GET http://127.0.0.1:5000/accounts
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Wed, 31 Dec 2025 19:58:19 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 3
+
+[]
+(venv) theia:project$ curl -i -X GET http://127.0.0.1:5000/accounts/1
+HTTP/1.1 404 NOT FOUND
+Server: gunicorn
+Date: Wed, 31 Dec 2025 19:58:22 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 102
+
+{"error":"Not Found","message":"404 Not Found: Account with id [1] could not be found.","status":404}
+(venv) theia:project$ 
+
+
+
+
+
+
+
+
