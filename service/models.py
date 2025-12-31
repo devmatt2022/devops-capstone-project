@@ -35,7 +35,8 @@ class PersistentBase:
         """
         Creates a Account to the database
         """
-        logger.info("Creating %s", self.name)
+        # logger.info("Creating %s", self.name)
+        logger.info(f"Creating {self.name} with id {self.id}")
         self.id = None  # id must be none to generate next primary key
         db.session.add(self)
         db.session.commit()
