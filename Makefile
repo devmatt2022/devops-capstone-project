@@ -60,8 +60,8 @@ run: ## Run the service
 
 dbrm: ## Stop and remove PostgreSQL in Docker
 	$(info Stopping and removing PostgreSQL...)
-	docker stop postgres
-	docker rm postgres
+	docker stop postgresql
+	docker rm postgresql
 
 db: ## Run PostgreSQL in Docker
 	$(info Running PostgreSQL...)
