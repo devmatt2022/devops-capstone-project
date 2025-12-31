@@ -55,3 +55,34 @@ The minimum required scopes are 'repo', 'read:org', 'workflow'.
 ✓ Logged in as devmatt2022
 (venv) theia:devops-capstone-project$ 
 
+
+
+(venv) theia:devops-capstone-project$ 
+gh run list
+STATUS  NAME                        WORKFLOW  BRANCH        EVENT         ID           ELAPSED  AGE
+✓       lint flake8 fixes           CI Build  add-ci-build  pull_request  20626923993  50s      2m
+X       Added badge for GitHub ...  CI Build  add-ci-build  pull_request  20626837852  47s      8m
+
+For details on a run, try: gh run view <run-id>
+(venv) theia:devops-capstone-project$ 
+gh run view 20626923993 --verbose
+
+✓ add-ci-build CI Build #13 · 20626923993
+Triggered via pull_request about 2 minutes ago
+
+JOBS
+✓ build in 47s (ID 59238960302)
+  ✓ Set up job
+  ✓ Initialize containers
+  ✓ Checkout
+  ✓ Install dependencies
+  ✓ Lint with flake8
+  ✓ Run unit tests with nose
+  ✓ Post Checkout
+  ✓ Stop containers
+  ✓ Complete job
+
+For more information about a job, try: gh run view --job=<job-id>
+View this run on GitHub: https://github.com/devmatt2022/devops-capstone-project/actions/runs/20626923993
+(venv) theia:devops-capstone-project$ 
+
