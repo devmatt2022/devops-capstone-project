@@ -173,3 +173,23 @@ class TestAccountService(TestCase):
         """It should not Read an Account that is not found"""
         resp = self.client.get(f"{BASE_URL}/0")
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_get_account_list(self):
+        """It should Get a list of Accounts"""
+        self._create_accounts(5)
+        resp = self.client.get(BASE_URL)
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), 5)
+
+
+
+
+
+
+"""
+read-accounts.jpeg (or read-accounts.png) — for the story “Read an account from the service.”
+list-accounts.jpeg (or list-accounts.png) — for the story “List all accounts in the service.”
+update-accounts.jpeg (or update-accounts.png) — for the story “Update an account in the service.”
+delete-accounts.jpeg (or delete-accounts.png) — for the story “Delete an account from the service.”
+"""
