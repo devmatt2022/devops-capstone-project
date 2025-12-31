@@ -1,0 +1,50 @@
+(venv) theia:project$ cd devops-capstone-project/
+(venv) theia:devops-capstone-project$ honcho start
+
+15:58:55 system | web.1 started (pid=24624)
+15:58:56 web.1  | [2025-12-31 15:58:56 -0500] [24626] [INFO] Starting gunicorn 20.1.0
+15:58:56 web.1  | [2025-12-31 15:58:56 -0500] [24626] [INFO] Listening at: http://0.0.0.0:5000 (24626)
+15:58:56 web.1  | [2025-12-31 15:58:56 -0500] [24626] [INFO] Using worker: sync
+15:58:56 web.1  | [2025-12-31 15:58:56 -0500] [24627] [INFO] Booting worker with pid: 24627
+15:58:56 web.1  | [2025-12-31 15:58:56 -0500] [INFO] [log_handlers] Logging handler established
+15:58:56 web.1  | [2025-12-31 15:58:56 -0500] [INFO] [__init__] **********************************************************************
+15:58:56 web.1  | [2025-12-31 15:58:56 -0500] [INFO] [__init__] **********  A C C O U N T   S E R V I C E   R U N N I N G  ***********
+15:58:56 web.1  | [2025-12-31 15:58:56 -0500] [INFO] [__init__] **********************************************************************
+15:58:56 web.1  | [2025-12-31 15:58:56 -0500] [INFO] [__init__] Service initialized!
+
+
+
+
+(venv) theia:project$ curl -I localhost:5000
+
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Wed, 31 Dec 2025 21:00:03 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 52
+
+(venv) theia:project$ 
+
+
+
+
+(venv) theia:devops-capstone-project$ curl -I localhost:5000
+
+HTTP/1.1 302 FOUND
+Server: gunicorn
+Date: Wed, 31 Dec 2025 21:08:05 GMT
+Connection: close
+Content-Type: text/html; charset=utf-8
+Content-Length: 233
+Location: https://localhost:5000/
+Permissions-Policy: browsing-topics=()
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Content-Security-Policy: default-src 'self'; object-src 'none'
+Referrer-Policy: strict-origin-when-cross-origin
+
+(venv) theia:devops-capstone-project$ 
+
+
+
