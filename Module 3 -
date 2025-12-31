@@ -49,6 +49,22 @@ Referrer-Policy: strict-origin-when-cross-origin
 
 
 
+(venv) theia:devops-capstone-project$ curl -I localhost:5000
+
+HTTP/1.1 302 FOUND
+Server: gunicorn
+Date: Wed, 31 Dec 2025 21:13:05 GMT
+Connection: close
+Content-Type: text/html; charset=utf-8
+Content-Length: 233
+Location: https://localhost:5000/
+Access-Control-Allow-Origin: *
+Permissions-Policy: browsing-topics=()
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Content-Security-Policy: default-src 'self'; object-src 'none'
+Referrer-Policy: strict-origin-when-cross-origin
+
 
 
 security-headers-done
