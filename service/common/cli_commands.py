@@ -18,7 +18,7 @@ def db_create():
     """
     print("Running drop_all")
     db.drop_all()
-    
+
     print("Running create_all")
     db.create_all()
 
