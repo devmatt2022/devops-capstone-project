@@ -124,3 +124,52 @@ class TestAccountService(TestCase):
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
     # ADD YOUR TEST CASES HERE ...
+    def test_read_an_account(self):
+        """It should call to accounts to create a new account, passing in some account data"""
+        # Create a test case called test_read_an_account(self).
+        # Make a self.client.post() call to accounts to create a new account, passing in some account data.
+        account = AccountFactory()
+        account_serialized = account.serialize()
+        create_response = self.client.post(
+            BASE_URL,
+            json=account_serialized,
+            content_type="application/json"
+        )
+        self.assertEqual(create_response.status_code, status.HTTP_201_CREATED)
+        new_account = create_response.get_json()
+
+        # Get back the account id that was generated from the json.
+        account_id = new_account["id"]
+        # breakpoint()
+        # Make a self.client.get() call to /accounts/{id} passing in that account id.
+        get_resp = self.client.get(
+            # f"{BASE_URL}/{account.id}",
+            f"{BASE_URL}/{account_id}",
+            content_type="application/json"
+        )
+
+        # Assert that the return code was HTTP_200_OK.
+        self.assertEqual(get_resp.status_code, status.HTTP_200_OK)
+
+        # Check the json that was returned and assert that it is equal to the data that you sent.
+        get_json = get_resp.get_json()
+        account_serialized.pop("id", None)
+        get_json.pop("id", None)
+        self.assertEqual(account_serialized, get_json)
+
+        # Run nosetests and watch it fail because there is no code yet.
+
+    def test_get_account(self):
+        """It should Read a single Account"""
+        account = self._create_accounts(1)[0]
+        resp = self.client.get(
+            f"{BASE_URL}/{account.id}", content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(data["name"], account.name)
+
+    def test_get_account_not_found(self):
+        """It should not Read an Account that is not found"""
+        resp = self.client.get(f"{BASE_URL}/0")
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
