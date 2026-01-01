@@ -204,3 +204,39 @@ status: {}
 (venv) theia:devops-capstone-project$ 
 
 
+
+
+
+
+kube-images
+(venv) theia:devops-capstone-project$ 
+docker image ls
+REPOSITORY                               TAG       IMAGE ID       CREATED          SIZE
+accounts                                 latest    c2ecfa86d418   16 minutes ago   204MB
+us.icr.io/sn-labs-ahmetshenus/accounts   1         c2ecfa86d418   16 minutes ago   204MB
+postgres                                 alpine    bb46dc8bfad7   15 months ago    248MB
+(venv) theia:devops-capstone-project$ 
+
+
+
+kube-deploy-accounts.png
+(venv) theia:devops-capstone-project$ 
+oc get all -l app=accounts
+Warning: apps.openshift.io/v1 DeploymentConfig is deprecated in v4.14+, unavailable in v4.10000+
+NAME                            READY   STATUS    RESTARTS   AGE
+pod/accounts-5f57c67ff8-9rd2r   1/1     Running   0          4m31s
+pod/accounts-5f57c67ff8-jt66w   1/1     Running   0          4m31s
+pod/accounts-5f57c67ff8-m89x7   1/1     Running   0          4m31s
+
+NAME               TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)    AGE
+service/accounts   ClusterIP   172.21.7.22   <none>        8080/TCP   4m2s
+
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/accounts   3/3     3            3           4m31s
+
+NAME                                  DESIRED   CURRENT   READY   AGE
+replicaset.apps/accounts-5f57c67ff8   3         3         3       4m31s
+
+NAME                                HOST/PORT                                                                                                                       PATH   SERVICES   PORT    TERMINATION   WILDCARD
+route.route.openshift.io/accounts   accounts-sn-labs-ahmetshenus.labs-prod-openshift-san-a45631dc5778dc6371c67d206ba9ae5c-0000.us-east.containers.appdomain.cloud          accounts   <all>   edge          None
+(venv) theia:devops-capstone-project$ 
