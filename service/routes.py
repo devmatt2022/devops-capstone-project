@@ -28,7 +28,7 @@ def index():
     return (
         jsonify(
             name="Account REST API Service",
-            version="1.0",
+            version="1.1",
             # paths=url_for("list_accounts", _external=True),
         ),
         status.HTTP_200_OK,
