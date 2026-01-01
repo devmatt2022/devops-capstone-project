@@ -49,3 +49,158 @@ fb5ccd0db472: Pushed
 
 kube-app-output
 {"name":"Account REST API Service","version":"1.0"}
+
+
+
+Exercise 6: Deploy to Kubernetes
+
+Use the below command to define and create resources based on the postgresql-ephemeral JSON template.
+
+1
+oc create -f postgresql-ephemeral-template.json
+
+Copied!
+
+Wrap Toggled!
+Use the oc new-app command to deploy the postgresql-ephemeral instance based on the template.
+
+Click here for the answer.
+1
+oc new-app postgresql-ephemeral
+
+Copied!
+
+Wrap Toggled!
+
+Executed!
+Use oc get all to make sure that the postgres service is defined and the postgres pod is running.
+
+
+
+(venv) theia:devops-capstone-project$ 
+oc create -f postgresql-ephemeral-template.json
+template.template.openshift.io/postgresql-ephemeral created
+(venv) theia:devops-capstone-project$ 
+oc new-app postgresql-ephemeral
+
+--> Deploying template "sn-labs-ahmetshenus/postgresql-ephemeral" to project sn-labs-ahmetshenus
+
+     PostgreSQL (Ephemeral)
+     ---------
+     PostgreSQL database service, without persistent storage. For more information about using this template, including OpenShift considerations, see https://github.com/sclorg/postgresql-container/.
+     
+     WARNING: Any data stored will be lost upon pod destruction. Only use this template for testing
+
+     The following service(s) have been created in your project: postgresql.
+     
+            Username: userIH4
+            Password: iEKEThCUpENbDKBg
+       Database Name: sampledb
+      Connection URL: postgresql://postgresql:5432/
+     
+     For more information about using this template, including OpenShift considerations, see https://github.com/sclorg/postgresql-container/.
+
+     * With parameters:
+        * Memory Limit=512Mi
+        * Namespace=openshift
+        * Database Service Name=postgresql
+        * PostgreSQL Connection Username=userIH4 # generated
+        * PostgreSQL Connection Password=iEKEThCUpENbDKBg # generated
+        * PostgreSQL Database Name=sampledb
+        * Version of PostgreSQL Image=10-el8
+
+--> Creating resources ...
+    secret "postgresql" created
+    service "postgresql" created
+Warning: apps.openshift.io/v1 DeploymentConfig is deprecated in v4.14+, unavailable in v4.10000+
+    deploymentconfig.apps.openshift.io "postgresql" created
+--> Success
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     'oc expose service/postgresql' 
+    Run 'oc status' to view your app.
+(venv) theia:devops-capstone-project$ 
+oc get all
+Warning: apps.openshift.io/v1 DeploymentConfig is deprecated in v4.14+, unavailable in v4.10000+
+NAME                                         READY   STATUS    RESTARTS   AGE
+pod/openshift-web-console-8554fb8879-2b4g2   2/2     Running   0          19m
+pod/openshift-web-console-8554fb8879-xw4ph   2/2     Running   0          19m
+pod/postgresql-1-deploy                      1/1     Running   0          7s
+pod/postgresql-1-lmr7m                       0/1     Running   0          6s
+
+NAME                                 DESIRED   CURRENT   READY   AGE
+replicationcontroller/postgresql-1   1         1         0       8s
+
+NAME                            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+service/openshift-web-console   ClusterIP   172.21.56.209    <none>        8000/TCP   19m
+service/postgresql              ClusterIP   172.21.220.160   <none>        5432/TCP   9s
+
+NAME                                    READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/openshift-web-console   2/2     2            2           19m
+
+NAME                                               DESIRED   CURRENT   READY   AGE
+replicaset.apps/openshift-web-console-8554fb8879   2         2         2       19m
+
+NAME                                            REVISION   DESIRED   CURRENT   TRIGGERED BY
+deploymentconfig.apps.openshift.io/postgresql   1          1         1         config,image(postgresql:10-el8)
+(venv) theia:devops-capstone-project$ 
+
+
+
+
+
+
+(venv) theia:devops-capstone-project$ 
+oc create deployment accounts \
+  --image=us.icr.io/$SN_ICR_NAMESPACE/accounts:1 \
+  --replicas=3 \
+  --dry-run=client -o yaml > deploy/deployment.yaml
+(venv) theia:devops-capstone-project$ 
+oc describe secret postgresql
+
+Name:         postgresql
+Namespace:    sn-labs-ahmetshenus
+Labels:       app=postgresql-ephemeral
+              app.kubernetes.io/component=postgresql-ephemeral
+              app.kubernetes.io/instance=postgresql-ephemeral
+              template=postgresql-ephemeral-template
+Annotations:  openshift.io/generated-by: OpenShiftNewApp
+              template.openshift.io/expose-database_name: {.data['database-name']}
+              template.openshift.io/expose-password: {.data['database-password']}
+              template.openshift.io/expose-username: {.data['database-user']}
+
+Type:  Opaque
+
+Data
+====
+database-name:      8 bytes
+database-password:  16 bytes
+database-user:      7 bytes
+(venv) theia:devops-capstone-project$ 
+cat deploy/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: accounts
+  name: accounts
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: accounts
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: accounts
+    spec:
+      containers:
+      - image: us.icr.io/sn-labs-ahmetshenus/accounts:1
+        name: accounts
+        resources: {}
+status: {}
+(venv) theia:devops-capstone-project$ 
+
+
