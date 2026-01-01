@@ -1,0 +1,971 @@
+(venv) theia:devops-capstone-project$ 
+oc create -f tekton/pvc.yaml
+
+persistentvolumeclaim/pipelinerun-pvc created
+(venv) theia:devops-capstone-project$ 
+oc apply -f tekton/tasks.yaml
+
+task.tekton.dev/echo created
+task.tekton.dev/cleanup created
+(venv) theia:devops-capstone-project$ 
+oc apply -f tekton/pipeline.yaml
+
+pipeline.tekton.dev/cd-pipeline created
+(venv) theia:devops-capstone-project$ 
+tkn hub install task git-clone
+
+WARN: This version has been deprecated
+Task git-clone(0.9) installed in sn-labs-ahmetshenus namespace
+(venv) theia:devops-capstone-project$ 
+echo $GITHUB_ACCOUNT 
+devmatt2022
+(venv) theia:devops-capstone-project$ 
+tkn pipeline start cd-pipeline \
+    -p repo-url="https://github.com/$GITHUB_ACCOUNT/devops-capstone-project.git" \
+    -p branch="main" \
+    -w name=pipeline-workspace,claimName=pipelinerun-pvc \
+    -s pipeline \
+    --showlog
+PipelineRun started: cd-pipeline-run-stjtq
+Waiting for logs to be available...
+[init : remove] Removing all files from /workspace/source ...
+
+[clone : clone] + '[' false '=' true ]
+[clone : clone] + '[' false '=' true ]
+[clone : clone] + '[' false '=' true ]
+[clone : clone] + CHECKOUT_DIR=/workspace/output/
+[clone : clone] + '[' true '=' true ]
+[clone : clone] + cleandir
+[clone : clone] + '[' -d /workspace/output/ ]
+[clone : clone] + rm -rf '/workspace/output//*'
+[clone : clone] + rm -rf '/workspace/output//.[!.]*'
+[clone : clone] + rm -rf '/workspace/output//..?*'
+[clone : clone] + test -z 
+[clone : clone] + test -z 
+[clone : clone] + test -z 
+[clone : clone] + git config --global --add safe.directory /workspace/output
+[clone : clone] + /ko-app/git-init '-url=https://github.com/devmatt2022/devops-capstone-project.git' '-revision=main' '-refspec=' '-path=/workspace/output/' '-sslVerify=true' '-submodules=true' '-depth=1' '-sparseCheckoutDirectories='
+
+[clone : clone] {"level":"info","ts":1767282446.123936,"caller":"git/git.go:176","msg":"Successfully cloned https://github.com/devmatt2022/devops-capstone-project.git @ d6a3b8e514a79bd8629b09badf2a2a3b6035a8b6 (grafted, HEAD, origin/main) in path /workspace/output/"}
+[clone : clone] {"level":"info","ts":1767282446.8115237,"caller":"git/git.go:215","msg":"Successfully initialized and updated submodules in path /workspace/output/"}
+[clone : clone] + cd /workspace/output/
+[clone : clone] + git rev-parse HEAD
+[clone : clone] + RESULT_SHA=d6a3b8e514a79bd8629b09badf2a2a3b6035a8b6
+[clone : clone] + EXIT_CODE=0
+[clone : clone] + '[' 0 '!=' 0 ]
+[clone : clone] + git log -1 '--pretty=%ct'
+[clone : clone] + RESULT_COMMITTER_DATE=1767281885
+[clone : clone] + printf '%s' 1767281885
+[clone : clone] + printf '%s' d6a3b8e514a79bd8629b09badf2a2a3b6035a8b6
+[clone : clone] + printf '%s' https://github.com/devmatt2022/devops-capstone-project.git
+
+(venv) theia:devops-capstone-project$ 
+(venv) theia:devops-capstone-project$ 
+tkn pipelinerun ls
+
+NAME                    STARTED          DURATION   STATUS
+cd-pipeline-run-stjtq   45 seconds ago   42s        Succeeded
+(venv) theia:devops-capstone-project$ 
+tkn hub install task flake8
+
+Task flake8(0.1) installed in sn-labs-ahmetshenus namespace
+(venv) theia:devops-capstone-project$ 
+git checkout
+M       tekton/pipeline.yaml
+Your branch is up to date with 'origin/main'.
+(venv) theia:devops-capstone-project$ 
+oc apply -f tekton/pipeline.yaml
+
+pipeline.tekton.dev/cd-pipeline configured
+(venv) theia:devops-capstone-project$ 
+tkn pipeline start cd-pipeline \
+       -p repo-url="https://github.com/$GITHUB_ACCOUNT/devops-capstone-project.git" \
+    -p branch="main" \
+       -w name=pipeline-workspace,claimName=pipelinerun-pvc \
+    -s pipeline \
+    --showlog
+
+PipelineRun started: cd-pipeline-run-7qknb
+Waiting for logs to be available...
+[init : remove] Removing all files from /workspace/source ...
+
+[clone : clone] + '[' false '=' true ]
+[clone : clone] + '[' false '=' true ]
+[clone : clone] + '[' false '=' true ]
+[clone : clone] + CHECKOUT_DIR=/workspace/output/
+[clone : clone] + '[' true '=' true ]
+[clone : clone] + cleandir
+[clone : clone] + '[' -d /workspace/output/ ]
+[clone : clone] + rm -rf '/workspace/output//*'
+[clone : clone] + rm -rf '/workspace/output//.[!.]*'
+[clone : clone] + rm -rf '/workspace/output//..?*'
+[clone : clone] + test -z 
+[clone : clone] + test -z 
+[clone : clone] + test -z 
+[clone : clone] + git config --global --add safe.directory /workspace/output
+[clone : clone] + /ko-app/git-init '-url=https://github.com/devmatt2022/devops-capstone-project.git' '-revision=main' '-refspec=' '-path=/workspace/output/' '-sslVerify=true' '-submodules=true' '-depth=1' '-sparseCheckoutDirectories='
+
+[clone : clone] {"level":"info","ts":1767282606.704407,"caller":"git/git.go:176","msg":"Successfully cloned https://github.com/devmatt2022/devops-capstone-project.git @ d6a3b8e514a79bd8629b09badf2a2a3b6035a8b6 (grafted, HEAD, origin/main) in path /workspace/output/"}
+[clone : clone] {"level":"info","ts":1767282607.462286,"caller":"git/git.go:215","msg":"Successfully initialized and updated submodules in path /workspace/output/"}
+[clone : clone] + cd /workspace/output/
+[clone : clone] + git rev-parse HEAD
+[clone : clone] + RESULT_SHA=d6a3b8e514a79bd8629b09badf2a2a3b6035a8b6
+[clone : clone] + EXIT_CODE=0
+[clone : clone] + '[' 0 '!=' 0 ]
+[clone : clone] + git log -1 '--pretty=%ct'
+[clone : clone] + RESULT_COMMITTER_DATE=1767281885
+[clone : clone] + printf '%s' 1767281885
+[clone : clone] + printf '%s' d6a3b8e514a79bd8629b09badf2a2a3b6035a8b6
+[clone : clone] + printf '%s' https://github.com/devmatt2022/devops-capstone-project.git
+
+[lint : flake8] Collecting Werkzeug==2.1.2
+[lint : flake8]   Downloading Werkzeug-2.1.2-py3-none-any.whl (224 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 224.9/224.9 kB 3.8 MB/s eta 0:00:00
+[lint : flake8] Collecting SQLAlchemy==1.4.46
+[lint : flake8]   Downloading SQLAlchemy-1.4.46-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.6 MB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 86.3 MB/s eta 0:00:00
+[lint : flake8] Collecting Flask==2.1.2
+[lint : flake8]   Downloading Flask-2.1.2-py3-none-any.whl (95 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 95.2/95.2 kB 50.9 MB/s eta 0:00:00
+[lint : flake8] Collecting Flask-SQLAlchemy==2.5.1
+[lint : flake8]   Downloading Flask_SQLAlchemy-2.5.1-py2.py3-none-any.whl (17 kB)
+[lint : flake8] Collecting psycopg2-binary==2.9.3
+[lint : flake8]   Downloading psycopg2_binary-2.9.3-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.0 MB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.0/3.0 MB 137.0 MB/s eta 0:00:00
+[lint : flake8] Collecting python-dotenv==0.20.0
+[lint : flake8]   Downloading python_dotenv-0.20.0-py3-none-any.whl (17 kB)
+[lint : flake8] Collecting Flask-Talisman
+[lint : flake8]   Downloading flask_talisman-1.1.0-py2.py3-none-any.whl (18 kB)
+[lint : flake8] Collecting Flask-Cors
+[lint : flake8]   Downloading flask_cors-6.0.2-py3-none-any.whl (13 kB)
+[lint : flake8] Collecting gunicorn==20.1.0
+[lint : flake8]   Downloading gunicorn-20.1.0-py3-none-any.whl (79 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79.5/79.5 kB 45.3 MB/s eta 0:00:00
+(venv) theia:project$ which python
+/home/theia/venv/bin/python
+(venv) theia:project$ python --version
+Python 3.9.25
+(venv) theia:project$ git checkout -b add-docker
+fatal: not a git repository (or any parent up to mount point /home)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+(venv) theia:project$ nosetests
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.000s
+
+OK
+(venv) theia:project$ cd devops-capstone-project/
+(venv) theia:devops-capstone-project$ nosetests
+
+Test Flask CLI Commands
+- It should call the db-create command
+
+Test Cases for Account Model
+- It should Create an account and add it to the database
+- It should Create an Account and assert that it exists
+- It should Delete an account from the database
+- It should Deserialize an account
+- It should not Deserialize an account with a KeyError
+- It should not Deserialize an account with a TypeError
+- It should Find an Account by name
+- It should List all Accounts in the database
+- It should Read an account
+- It should Serialize an account
+- It should Update an account
+
+Account Service Tests
+- It should not Create an Account when sending the wrong data
+- It should return a CORS header
+- It should Create a new Account
+- It should Delete an Account
+- It should Read a single Account
+- It should Get a list of Accounts
+- It should not Read an Account that is not found
+- It should be healthy
+- It should get 200_OK from the Home Page
+- It should not allow an illegal method call
+- It should call to accounts to create a new account, passing in some account data
+- It should return security headers
+- It should not Create an Account when sending the wrong media type
+- It should Update an existing Account
+
+Name                               Stmts   Miss  Cover   Missing
+----------------------------------------------------------------
+service/__init__.py                   22      3    86%   36-39
+service/common/__init__.py             0      0   100%
+service/common/cli_commands.py        10      0   100%
+service/common/error_handlers.py      32      3    91%   76-78
+service/common/log_handlers.py        10      1    90%   21
+service/common/status.py              46      0   100%
+service/config.py                     11      0   100%
+service/models.py                     69      3    96%   32, 99, 128
+service/routes.py                     56      1    98%   142
+----------------------------------------------------------------
+TOTAL                                256     11    96%
+----------------------------------------------------------------------
+Ran 26 tests in 0.865s
+
+OK
+
+(venv) theia:devops-capstone-project$ git checkout -b add-docker
+Switched to a new branch 'add-docker'
+(venv) theia:devops-capstone-project$ 
+(venv) theia:devops-capstone-project$ 
+(venv) theia:devops-capstone-project$ l
+ LICENSE
+ Makefile
+'Module 2 - Exercise 4 - Sprint Review'
+'Module 3 - Exercise 10 - View the Workflow Run'
+'Module 3 - Security'
+ Procfile
+ README.md
+ bin/
+ deploy/
+ postgresql-ephemeral-template.json
+ requirements.txt
+ service/
+ setup.cfg
+ tekton/
+ tests/
+(venv) theia:devops-capstone-project$ docker build -t accounts .
+[+] Building 34.4s (11/11) FINISHED               docker:default
+ => [internal] load build definition from Dockerfile        0.1s
+ => => transferring dockerfile: 454B                        0.0s
+ => [internal] load metadata for docker.io/library/python:  1.7s
+ => [internal] load .dockerignore                           0.0s
+ => => transferring context: 2B                             0.0s
+ => [1/6] FROM docker.io/library/python:3.9-slim@sha256:93  7.0s
+ => => resolve docker.io/library/python:3.9-slim@sha256:93  0.0s
+ => => sha256:9d8cb7037cd8e90893e5f430ce4c 5.20kB / 5.20kB  0.0s
+ => => sha256:302e3ee498053a7b5332ac79e8 29.13MB / 29.13MB  4.3s
+ => => sha256:4c0965d3919510b506d8856ebc05 3.51MB / 3.51MB  3.0s
+ => => sha256:fdeeec85abbad3878f2008f944 14.74MB / 14.74MB  3.1s
+ => => sha256:93ab151da4e5310ea79c4ecf306e 1.75kB / 1.75kB  0.0s
+ => => sha256:62a08b8dd4f53ad5493dabf2af00ccde 248B / 248B  3.3s
+ => => extracting sha256:302e3ee498053a7b5332ac79e8efebec1  1.5s
+ => => extracting sha256:4c0965d3919510b506d8856ebc050a96e  0.2s
+ => => extracting sha256:fdeeec85abbad3878f2008f9445f15a19  0.8s
+ => => extracting sha256:62a08b8dd4f53ad5493dabf2af00ccde9  0.0s
+ => [internal] load build context                           0.0s
+ => => transferring context: 36.18kB                        0.0s
+ => [2/6] WORKDIR /app                                      2.3s
+ => [3/6] COPY requirements.txt .                           0.0s
+ => [4/6] RUN pip install --no-cache-dir -r requirements.  21.3s
+ => [5/6] COPY service/ ./service/                          0.2s
+ => [6/6] RUN useradd --uid 1000 theia && chown -R theia /  0.3s
+ => exporting to image                                      1.4s
+ => => exporting layers                                     1.4s
+ => => writing image sha256:c2ecfa86d41864b379e7bd365cc0bf  0.0s
+ => => naming to docker.io/library/accounts                 0.0s
+(venv) theia:devops-capstone-project$ docker ps
+CONTAINER ID   IMAGE             COMMAND                  CREATED         STATUS         PORTS                                         NAMES
+2da5d5fc7cee   postgres:alpine   "docker-entrypoint.s…"   9 minutes ago   Up 9 minutes   0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp   postgresql
+(venv) theia:devops-capstone-project$ export PS1="$PS1"$'\n'
+(venv) theia:devops-capstone-project$ 
+(venv) theia:devops-capstone-project$ 
+docker ps
+CONTAINER ID   IMAGE             COMMAND                  CREATED          STATUS          PORTS                                         NAMES
+2da5d5fc7cee   postgres:alpine   "docker-entrypoint.s…"   10 minutes ago   Up 10 minutes   0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp   postgresql
+(venv) theia:devops-capstone-project$ 
+(venv) theia:devops-capstone-project$ 
+(venv) theia:devops-capstone-project$ 
+docker run --rm \
+    --link postgresql \
+    -p 8080:8080 \
+    -e DATABASE_URI=postgresql://postgres:postgres@postgresql:5432/postgres \
+    accounts
+[2026-01-01 15:19:36 +0000] [1] [INFO] Starting gunicorn 20.1.0
+[2026-01-01 15:19:36 +0000] [1] [INFO] Listening at: http://0.0.0.0:8080 (1)
+[2026-01-01 15:19:36 +0000] [1] [INFO] Using worker: sync
+[2026-01-01 15:19:36 +0000] [7] [INFO] Booting worker with pid: 7
+[2026-01-01 15:19:37 +0000] [INFO] [log_handlers] Logging handler established
+[2026-01-01 15:19:37 +0000] [INFO] [__init__] **********************************************************************
+[2026-01-01 15:19:37 +0000] [INFO] [__init__] **********  A C C O U N T   S E R V I C E   R U N N I N G  ***********
+[2026-01-01 15:19:37 +0000] [INFO] [__init__] **********************************************************************
+[2026-01-01 15:19:37 +0000] [INFO] [__init__] Service initialized!
+[2026-01-01 15:19:47 +0000] [1] [INFO] Handling signal: winch
+[2026-01-01 15:19:52 +0000] [1] [INFO] Handling signal: winch
+^C[2026-01-01 15:20:01 +0000] [1] [INFO] Handling signal: int
+[2026-01-01 15:20:01 +0000] [INFO] [glogging] Worker exiting (pid: 7)
+[2026-01-01 15:20:01 +0000] [1] [INFO] Shutting down: Master
+(venv) theia:devops-capstone-project$ 
+docker tag accounts us.icr.io/$SN_ICR_NAMESPACE/accounts:1
+docker push us.icr.io/$SN_ICR_NAMESPACE/accounts:1
+The push refers to repository [us.icr.io/sn-labs-ahmetshenus/accounts]
+0e216775a1aa: Pushed 
+3de0ca3a7c44: Pushed 
+aaa6366af6d5: Pushed 
+e89228ec9e9c: Pushed 
+83b4edbfb659: Pushed 
+9e599118e168: Pushed 
+e228adf1886f: Pushed 
+fb5ccd0db472: Pushed 
+8d853c8add5d: Pushed 
+1: digest: sha256:d05cc43a6a99c430d2ad4eb575bf008b9cd832f7fb29342578653e9f79bbe0dc size: 2202
+(venv) theia:devops-capstone-project$ 
+git checkout - 
+Switched to branch 'main'
+Your branch is up to date with 'origin/main'.
+(venv) theia:devops-capstone-project$ 
+git pull
+remote: Enumerating objects: 1, done.
+remote: Counting objects: 100% (1/1), done.
+remote: Total 1 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (1/1), 897 bytes | 897.00 KiB/s, done.
+From https://github.com/devmatt2022/devops-capstone-project
+   406c364..a1a234d  main       -> origin/main
+Updating 406c364..a1a234d
+Fast-forward
+ Dockerfile                       | 17 +++++++++
+ Module 4 - Docker and Kubernetes | 51 +++++++++++++++++++++++++
+ 2 files changed, 68 insertions(+)
+ create mode 100644 Dockerfile
+ create mode 100644 Module 4 - Docker and Kubernetes
+(venv) theia:devops-capstone-project$ 
+git checkout -b add-kubernetes
+Switched to a new branch 'add-kubernetes'
+(venv) theia:devops-capstone-project$ 
+oc create -f postgresql-ephemeral-template.json
+template.template.openshift.io/postgresql-ephemeral created
+(venv) theia:devops-capstone-project$ 
+oc new-app postgresql-ephemeral
+
+--> Deploying template "sn-labs-ahmetshenus/postgresql-ephemeral" to project sn-labs-ahmetshenus
+
+     PostgreSQL (Ephemeral)
+     ---------
+     PostgreSQL database service, without persistent storage. For more information about using this template, including OpenShift considerations, see https://github.com/sclorg/postgresql-container/.
+     
+     WARNING: Any data stored will be lost upon pod destruction. Only use this template for testing
+
+     The following service(s) have been created in your project: postgresql.
+     
+            Username: userIH4
+            Password: iEKEThCUpENbDKBg
+       Database Name: sampledb
+      Connection URL: postgresql://postgresql:5432/
+     
+     For more information about using this template, including OpenShift considerations, see https://github.com/sclorg/postgresql-container/.
+
+     * With parameters:
+        * Memory Limit=512Mi
+        * Namespace=openshift
+        * Database Service Name=postgresql
+        * PostgreSQL Connection Username=userIH4 # generated
+        * PostgreSQL Connection Password=iEKEThCUpENbDKBg # generated
+        * PostgreSQL Database Name=sampledb
+        * Version of PostgreSQL Image=10-el8
+
+--> Creating resources ...
+    secret "postgresql" created
+    service "postgresql" created
+Warning: apps.openshift.io/v1 DeploymentConfig is deprecated in v4.14+, unavailable in v4.1
+(venv) theia:devops-capstone-project$ 
+echo $SN_ICR_NAMESPACE
+sn-labs-ahmetshenus
+(venv) theia:devops-capstone-project$ 
+oc create deployment accounts \
+  --image=us.icr.io/$SN_ICR_NAMESPACE/accounts:1 \
+  --replicas=3 \
+  --dry-run=client -o yaml > deploy/deployment.yaml
+(venv) theia:devops-capstone-project$ 
+oc describe secret postgresql
+
+Name:         postgresql
+Namespace:    sn-labs-ahmetshenus
+Labels:       app=postgresql-ephemeral
+              app.kubernetes.io/component=postgresql-ephemeral
+              app.kubernetes.io/instance=postgresql-ephemeral
+              template=postgresql-ephemeral-template
+Annotations:  openshift.io/generated-by: OpenShiftNewApp
+              template.openshift.io/expose-database_name: {.data['database-name']}
+              template.openshift.io/expose-password: {.data['database-password']}
+              template.openshift.io/expose-username: {.data['database-user']}
+
+Type:  Opaque
+
+Data
+====
+database-name:      8 bytes
+(venv) theia:devops-capstone-project$ 
+(venv) theia:devops-capstone-project$ 
+(venv) theia:devops-capstone-project$ 
+(venv) theia:devops-capstone-project$ 
+(venv) theia:devops-capstone-project$ 
+(venv) theia:devops-capstone-project$ 
+(venv) theia:devops-capstone-project$ 
+oc create -f deploy/deployment.yaml
+
+deployment.apps/accounts created
+(venv) theia:devops-capstone-project$ 
+oc expose deploy accounts \
+  --type=ClusterIP \
+  --port=8080 \
+  --dry-run=client -o yaml > deploy/service.yaml
+
+(venv) theia:devops-capstone-project$ 
+oc create -f deploy/service.yaml
+
+service/accounts created
+(venv) theia:devops-capstone-project$ 
+oc get all -l app=accounts
+
+Warning: apps.openshift.io/v1 DeploymentConfig is deprecated in v4.14+, unavailable in v4.10000+
+NAME                            READY   STATUS    RESTARTS   AGE
+pod/accounts-5f57c67ff8-9rd2r   1/1     Running   0          35s
+pod/accounts-5f57c67ff8-jt66w   1/1     Running   0          35s
+pod/accounts-5f57c67ff8-m89x7   1/1     Running   0          35s
+
+NAME               TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)    AGE
+service/accounts   ClusterIP   172.21.7.22   <none>        8080/TCP   6s
+
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/accounts   3/3     3            3           35s
+
+NAME                                  DESIRED   CURRENT   READY   AGE
+replicaset.apps/accounts-5f57c67ff8   3         3         3       35s
+(venv) theia:devops-capstone-project$ 
+oc create route edge accounts --service=accounts
+
+route.route.openshift.io/accounts created
+(venv) theia:devops-capstone-project$ 
+oc get routes
+
+NAME       HOST/PORT                                                                                                                       PATH   SERVICES   PORT    TERMINATION   WILDCARD
+accounts   accounts-sn-labs-ahmetshenus.labs-prod-openshift-san-a45631dc5778dc6371c67d206ba9ae5c-0000.us-east.containers.appdomain.cloud          accounts   <all>   edge          None
+(venv) theia:devops-capstone-project$ 
+docker image ls
+
+REPOSITORY                               TAG       IMAGE ID       CREATED          SIZE
+accounts                                 latest    c2ecfa86d418   15 minutes ago   204MB
+us.icr.io/sn-labs-ahmetshenus/accounts   1         c2ecfa86d418   15 minutes ago   204MB
+postgres                                 alpine    bb46dc8bfad7   15 months ago    248MB
+(venv) theia:devops-capstone-project$ 
+git checkout -
+Switched to branch 'main'
+Your branch is up to date with 'origin/main'.
+(venv) theia:devops-capstone-project$ 
+git pull
+remote: Enumerating objects: 1, done.
+remote: Counting objects: 100% (1/1), done.
+remote: Total 1 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (1/1), 899 bytes | 899.00 KiB/s, done.
+From https://github.com/devmatt2022/devops-capstone-project
+   a1a234d..6488dd5  main       -> origin/main
+Updating a1a234d..6488dd5
+Fast-forward
+ Module 4 - Docker and Kubernetes | 155 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ deploy/deployment.yaml           |  43 ++++++++++++++
+ deploy/service.yaml              |  17 ++++++
+ 3 files changed, 215 insertions(+)
+ create mode 100644 deploy/deployment.yaml
+ create mode 100644 deploy/service.yaml
+(venv) theia:devops-capstone-project$ 
+docker image ls
+REPOSITORY                               TAG       IMAGE ID       CREATED          SIZE
+accounts                                 latest    c2ecfa86d418   16 minutes ago   204MB
+us.icr.io/sn-labs-ahmetshenus/accounts   1         c2ecfa86d418   16 minutes ago   204MB
+postgres                                 alpine    bb46dc8bfad7   15 months ago    248MB
+(venv) theia:devops-capstone-project$ 
+(venv) theia:devops-capstone-project$ 
+oc create -f tekton/pvc.yaml
+
+persistentvolumeclaim/pipelinerun-pvc created
+(venv) theia:devops-capstone-project$ 
+oc apply -f tekton/tasks.yaml
+
+task.tekton.dev/echo created
+task.tekton.dev/cleanup created
+(venv) theia:devops-capstone-project$ 
+oc apply -f tekton/pipeline.yaml
+
+pipeline.tekton.dev/cd-pipeline created
+(venv) theia:devops-capstone-project$ 
+tkn hub install task git-clone
+
+WARN: This version has been deprecated
+Task git-clone(0.9) installed in sn-labs-ahmetshenus namespace
+(venv) theia:devops-capstone-project$ 
+echo $GITHUB_ACCOUNT 
+devmatt2022
+(venv) theia:devops-capstone-project$ 
+tkn pipeline start cd-pipeline \
+    -p repo-url="https://github.com/$GITHUB_ACCOUNT/devops-capstone-project.git" \
+    -p branch="main" \
+    -w name=pipeline-workspace,claimName=pipelinerun-pvc \
+    -s pipeline \
+    --showlog
+PipelineRun started: cd-pipeline-run-stjtq
+Waiting for logs to be available...
+[init : remove] Removing all files from /workspace/source ...
+
+[clone : clone] + '[' false '=' true ]
+[clone : clone] + '[' false '=' true ]
+[clone : clone] + '[' false '=' true ]
+[clone : clone] + CHECKOUT_DIR=/workspace/output/
+[clone : clone] + '[' true '=' true ]
+[clone : clone] + cleandir
+[clone : clone] + '[' -d /workspace/output/ ]
+[clone : clone] + rm -rf '/workspace/output//*'
+[clone : clone] + rm -rf '/workspace/output//.[!.]*'
+[clone : clone] + rm -rf '/workspace/output//..?*'
+[clone : clone] + test -z 
+[clone : clone] + test -z 
+[clone : clone] + test -z 
+[clone : clone] + git config --global --add safe.directory /workspace/output
+[clone : clone] + /ko-app/git-init '-url=https://github.com/devmatt2022/devops-capstone-project.git' '-revision=main' '-refspec=' '-path=/workspace/output/' '-sslVerify=true' '-submodules=true' '-depth=1' '-sparseCheckoutDirectories='
+
+[clone : clone] {"level":"info","ts":1767282446.123936,"caller":"git/git.go:176","msg":"Successfully cloned https://github.com/devmatt2022/devops-capstone-project.git @ d6a3b8e514a79bd8629b09badf2a2a3b6035a8b6 (grafted, HEAD, origin/main) in path /workspace/output/"}
+[clone : clone] {"level":"info","ts":1767282446.8115237,"caller":"git/git.go:215","msg":"Successfully initialized and updated submodules in path /workspace/output/"}
+[clone : clone] + cd /workspace/output/
+[clone : clone] + git rev-parse HEAD
+[clone : clone] + RESULT_SHA=d6a3b8e514a79bd8629b09badf2a2a3b6035a8b6
+[clone : clone] + EXIT_CODE=0
+[clone : clone] + '[' 0 '!=' 0 ]
+[clone : clone] + git log -1 '--pretty=%ct'
+[clone : clone] + RESULT_COMMITTER_DATE=1767281885
+[clone : clone] + printf '%s' 1767281885
+[clone : clone] + printf '%s' d6a3b8e514a79bd8629b09badf2a2a3b6035a8b6
+[clone : clone] + printf '%s' https://github.com/devmatt2022/devops-capstone-project.git
+
+(venv) theia:devops-capstone-project$ 
+(venv) theia:devops-capstone-project$ 
+tkn pipelinerun ls
+
+NAME                    STARTED          DURATION   STATUS
+cd-pipeline-run-stjtq   45 seconds ago   42s        Succeeded
+(venv) theia:devops-capstone-project$ 
+tkn hub install task flake8
+
+Task flake8(0.1) installed in sn-labs-ahmetshenus namespace
+(venv) theia:devops-capstone-project$ 
+git checkout
+M       tekton/pipeline.yaml
+Your branch is up to date with 'origin/main'.
+(venv) theia:devops-capstone-project$ 
+oc apply -f tekton/pipeline.yaml
+
+pipeline.tekton.dev/cd-pipeline configured
+(venv) theia:devops-capstone-project$ 
+tkn pipeline start cd-pipeline \
+       -p repo-url="https://github.com/$GITHUB_ACCOUNT/devops-capstone-project.git" \
+    -p branch="main" \
+       -w name=pipeline-workspace,claimName=pipelinerun-pvc \
+    -s pipeline \
+    --showlog
+
+PipelineRun started: cd-pipeline-run-7qknb
+Waiting for logs to be available...
+[init : remove] Removing all files from /workspace/source ...
+
+[clone : clone] + '[' false '=' true ]
+[clone : clone] + '[' false '=' true ]
+[clone : clone] + '[' false '=' true ]
+[clone : clone] + CHECKOUT_DIR=/workspace/output/
+[clone : clone] + '[' true '=' true ]
+[clone : clone] + cleandir
+[clone : clone] + '[' -d /workspace/output/ ]
+[clone : clone] + rm -rf '/workspace/output//*'
+[clone : clone] + rm -rf '/workspace/output//.[!.]*'
+[clone : clone] + rm -rf '/workspace/output//..?*'
+[clone : clone] + test -z 
+[clone : clone] + test -z 
+[clone : clone] + test -z 
+[clone : clone] + git config --global --add safe.directory /workspace/output
+[clone : clone] + /ko-app/git-init '-url=https://github.com/devmatt2022/devops-capstone-project.git' '-revision=main' '-refspec=' '-path=/workspace/output/' '-sslVerify=true' '-submodules=true' '-depth=1' '-sparseCheckoutDirectories='
+
+[clone : clone] {"level":"info","ts":1767282606.704407,"caller":"git/git.go:176","msg":"Successfully cloned https://github.com/devmatt2022/devops-capstone-project.git @ d6a3b8e514a79bd8629b09badf2a2a3b6035a8b6 (grafted, HEAD, origin/main) in path /workspace/output/"}
+[clone : clone] {"level":"info","ts":1767282607.462286,"caller":"git/git.go:215","msg":"Successfully initialized and updated submodules in path /workspace/output/"}
+[clone : clone] + cd /workspace/output/
+[clone : clone] + git rev-parse HEAD
+[clone : clone] + RESULT_SHA=d6a3b8e514a79bd8629b09badf2a2a3b6035a8b6
+[clone : clone] + EXIT_CODE=0
+[clone : clone] + '[' 0 '!=' 0 ]
+[clone : clone] + git log -1 '--pretty=%ct'
+[clone : clone] + RESULT_COMMITTER_DATE=1767281885
+[clone : clone] + printf '%s' 1767281885
+[clone : clone] + printf '%s' d6a3b8e514a79bd8629b09badf2a2a3b6035a8b6
+[clone : clone] + printf '%s' https://github.com/devmatt2022/devops-capstone-project.git
+
+[lint : flake8] Collecting Werkzeug==2.1.2
+[lint : flake8]   Downloading Werkzeug-2.1.2-py3-none-any.whl (224 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 224.9/224.9 kB 3.8 MB/s eta 0:00:00
+[lint : flake8] Collecting SQLAlchemy==1.4.46
+[lint : flake8]   Downloading SQLAlchemy-1.4.46-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.6 MB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 86.3 MB/s eta 0:00:00
+[lint : flake8] Collecting Flask==2.1.2
+[lint : flake8]   Downloading Flask-2.1.2-py3-none-any.whl (95 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 95.2/95.2 kB 50.9 MB/s eta 0:00:00
+[lint : flake8] Collecting Flask-SQLAlchemy==2.5.1
+[lint : flake8]   Downloading Flask_SQLAlchemy-2.5.1-py2.py3-none-any.whl (17 kB)
+[lint : flake8] Collecting psycopg2-binary==2.9.3
+[lint : flake8]   Downloading psycopg2_binary-2.9.3-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.0 MB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.0/3.0 MB 137.0 MB/s eta 0:00:00
+[lint : flake8] Collecting python-dotenv==0.20.0
+[lint : flake8]   Downloading python_dotenv-0.20.0-py3-none-any.whl (17 kB)
+[lint : flake8] Collecting Flask-Talisman
+[lint : flake8]   Downloading flask_talisman-1.1.0-py2.py3-none-any.whl (18 kB)
+[lint : flake8] Collecting Flask-Cors
+[lint : flake8]   Downloading flask_cors-6.0.2-py3-none-any.whl (13 kB)
+[lint : flake8] Collecting gunicorn==20.1.0
+[lint : flake8]   Downloading gunicorn-20.1.0-py3-none-any.whl (79 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79.5/79.5 kB 45.3 MB/s eta 0:00:00
+[lint : flake8] Collecting honcho==1.1.0
+[lint : flake8]   Downloading honcho-1.1.0-py2.py3-none-any.whl (21 kB)
+[lint : flake8] Collecting pylint==2.14.0
+[lint : flake8]   Downloading pylint-2.14.0-py3-none-any.whl (485 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 485.0/485.0 kB 108.7 MB/s eta 0:00:00
+[lint : flake8] Collecting flake8==4.0.1
+[lint : flake8]   Downloading flake8-4.0.1-py2.py3-none-any.whl (64 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 64.1/64.1 kB 36.7 MB/s eta 0:00:00
+[lint : flake8] Collecting black==22.3.0
+[lint : flake8]   Downloading black-22.3.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.5 MB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.5/1.5 MB 134.5 MB/s eta 0:00:00
+[lint : flake8] Collecting nose==1.3.7
+[lint : flake8]   Downloading nose-1.3.7-py3-none-any.whl (154 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 154.7/154.7 kB 66.1 MB/s eta 0:00:00
+[lint : flake8] Collecting pinocchio==0.4.3
+[lint : flake8]   Downloading pinocchio-0.4.3-py3-none-any.whl (12 kB)
+[lint : flake8] Collecting factory-boy==2.12.0
+[lint : flake8]   Downloading factory_boy-2.12.0-py2.py3-none-any.whl (36 kB)
+[lint : flake8] Collecting coverage==6.3.2
+[lint : flake8]   Downloading coverage-6.3.2-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (210 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 210.7/210.7 kB 49.3 MB/s eta 0:00:00
+[lint : flake8] Collecting httpie==3.2.1
+[lint : flake8]   Downloading httpie-3.2.1-py3-none-any.whl (124 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 125.0/125.0 kB 68.4 MB/s eta 0:00:00
+[lint : flake8] Collecting greenlet!=0.4.17
+[lint : flake8]   Downloading greenlet-3.2.4-cp39-cp39-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (582 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 582.8/582.8 kB 117.6 MB/s eta 0:00:00
+[lint : flake8] Collecting importlib-metadata>=3.6.0
+[lint : flake8]   Downloading importlib_metadata-8.7.1-py3-none-any.whl (27 kB)
+[lint : flake8] Collecting click>=8.0
+[lint : flake8]   Downloading click-8.1.8-py3-none-any.whl (98 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 98.2/98.2 kB 59.2 MB/s eta 0:00:00
+[lint : flake8] Collecting itsdangerous>=2.0
+[lint : flake8]   Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+[lint : flake8] Collecting Jinja2>=3.0
+[lint : flake8]   Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 134.9/134.9 kB 2.7 MB/s eta 0:00:00
+[lint : flake8] Requirement already satisfied: setuptools>=3.0 in /usr/local/lib/python3.9/site-packages (from gunicorn==20.1.0->-r requirements.txt (line 14)) (58.1.0)
+[lint : flake8] Collecting tomli>=1.1.0
+[lint : flake8]   Downloading tomli-2.3.0-py3-none-any.whl (14 kB)
+[lint : flake8] Collecting tomlkit>=0.10.1
+[lint : flake8]   Downloading tomlkit-0.13.3-py3-none-any.whl (38 kB)
+[lint : flake8] Collecting astroid<=2.12.0-dev0,>=2.11.5
+[lint : flake8]   Downloading astroid-2.11.7-py3-none-any.whl (251 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 251.2/251.2 kB 4.9 MB/s eta 0:00:00
+[lint : flake8] Collecting typing-extensions>=3.10.0
+[lint : flake8]   Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.6/44.6 kB 29.9 MB/s eta 0:00:00
+[lint : flake8] Collecting mccabe<0.8,>=0.6
+[lint : flake8]   Downloading mccabe-0.7.0-py2.py3-none-any.whl (7.3 kB)
+[lint : flake8] Collecting dill>=0.2
+[lint : flake8]   Downloading dill-0.4.0-py3-none-any.whl (119 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 119.7/119.7 kB 60.4 MB/s eta 0:00:00
+[lint : flake8] Collecting platformdirs>=2.2.0
+[lint : flake8]   Downloading platformdirs-4.4.0-py3-none-any.whl (18 kB)
+[lint : flake8] Collecting isort<6,>=4.2.5
+[lint : flake8]   Downloading isort-5.13.2-py3-none-any.whl (92 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 92.3/92.3 kB 48.2 MB/s eta 0:00:00
+[lint : flake8] Collecting pyflakes<2.5.0,>=2.4.0
+[lint : flake8]   Downloading pyflakes-2.4.0-py2.py3-none-any.whl (69 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.7/69.7 kB 41.9 MB/s eta 0:00:00
+[lint : flake8] Collecting mccabe<0.8,>=0.6
+[lint : flake8]   Downloading mccabe-0.6.1-py2.py3-none-any.whl (8.6 kB)
+[lint : flake8] Collecting pycodestyle<2.9.0,>=2.8.0
+[lint : flake8]   Downloading pycodestyle-2.8.0-py2.py3-none-any.whl (42 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 42.1/42.1 kB 29.4 MB/s eta 0:00:00
+[lint : flake8] Collecting pathspec>=0.9.0
+[lint : flake8]   Downloading pathspec-0.12.1-py3-none-any.whl (31 kB)
+[lint : flake8] Collecting mypy-extensions>=0.4.3
+[lint : flake8]   Downloading mypy_extensions-1.1.0-py3-none-any.whl (5.0 kB)
+[lint : flake8] Collecting colorama
+[lint : flake8]   Downloading colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+[lint : flake8] Collecting Faker>=0.7.0
+[lint : flake8]   Downloading faker-37.12.0-py3-none-any.whl (2.0 MB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 31.7 MB/s eta 0:00:00
+[lint : flake8] Collecting multidict>=4.7.0
+[lint : flake8]   Downloading multidict-6.7.0-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (239 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 239.2/239.2 kB 86.6 MB/s eta 0:00:00
+[lint : flake8] Collecting rich>=9.10.0
+[lint : flake8]   Downloading rich-14.2.0-py3-none-any.whl (243 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 243.4/243.4 kB 89.3 MB/s eta 0:00:00
+[lint : flake8] Collecting defusedxml>=0.6.0
+[lint : flake8]   Downloading defusedxml-0.7.1-py2.py3-none-any.whl (25 kB)
+[lint : flake8] Requirement already satisfied: pip in /usr/local/lib/python3.9/site-packages (from httpie==3.2.1->-r requirements.txt (line 31)) (23.0.1)
+[lint : flake8] Collecting requests-toolbelt>=0.9.1
+[lint : flake8]   Downloading requests_toolbelt-1.0.0-py2.py3-none-any.whl (54 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 54.5/54.5 kB 38.6 MB/s eta 0:00:00
+[lint : flake8] Collecting Pygments>=2.5.2
+[lint : flake8]   Downloading pygments-2.19.2-py3-none-any.whl (1.2 MB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 128.9 MB/s eta 0:00:00
+[lint : flake8] Collecting charset-normalizer>=2.0.0
+[lint : flake8]   Downloading charset_normalizer-3.4.4-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (153 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 154.0/154.0 kB 2.9 MB/s eta 0:00:00
+[lint : flake8] Collecting requests[socks]>=2.22.0
+[lint : flake8]   Downloading requests-2.32.5-py3-none-any.whl (64 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 64.7/64.7 kB 38.5 MB/s eta 0:00:00
+[lint : flake8] Collecting wrapt<2,>=1.11
+[lint : flake8]   Downloading wrapt-1.17.3-cp39-cp39-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (81 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 81.7/81.7 kB 48.7 MB/s eta 0:00:00
+[lint : flake8] Collecting lazy-object-proxy>=1.4.0
+[lint : flake8]   Downloading lazy_object_proxy-1.12.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (66 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 66.3/66.3 kB 39.6 MB/s eta 0:00:00
+[lint : flake8] Collecting tzdata
+[lint : flake8]   Downloading tzdata-2025.3-py2.py3-none-any.whl (348 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 348.5/348.5 kB 104.6 MB/s eta 0:00:00
+[lint : flake8] Collecting zipp>=3.20
+[lint : flake8]   Downloading zipp-3.23.0-py3-none-any.whl (10 kB)
+[lint : flake8] Collecting MarkupSafe>=2.0
+[lint : flake8]   Downloading markupsafe-3.0.3-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (20 kB)
+[lint : flake8] Collecting certifi>=2017.4.17
+[lint : flake8]   Downloading certifi-2025.11.12-py3-none-any.whl (159 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 159.4/159.4 kB 76.0 MB/s eta 0:00:00
+[lint : flake8] Collecting urllib3<3,>=1.21.1
+[lint : flake8]   Downloading urllib3-2.6.2-py3-none-any.whl (131 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 131.2/131.2 kB 63.3 MB/s eta 0:00:00
+[lint : flake8] Collecting idna<4,>=2.5
+[lint : flake8]   Downloading idna-3.11-py3-none-any.whl (71 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 71.0/71.0 kB 43.4 MB/s eta 0:00:00
+[lint : flake8] Collecting PySocks!=1.5.7,>=1.5.6
+[lint : flake8]   Downloading PySocks-1.7.1-py3-none-any.whl (16 kB)
+[lint : flake8] Collecting markdown-it-py>=2.2.0
+[lint : flake8]   Downloading markdown_it_py-3.0.0-py3-none-any.whl (87 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 87.5/87.5 kB 53.8 MB/s eta 0:00:00
+[lint : flake8] Collecting mdurl~=0.1
+[lint : flake8]   Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+[lint : flake8] Installing collected packages: nose, mccabe, honcho, Flask-Talisman, zipp, wrapt, Werkzeug, urllib3, tzdata, typing-extensions, tomlkit, tomli, python-dotenv, PySocks, Pygments, pyflakes, pycodestyle, psycopg2-binary, platformdirs, pathspec, mypy-extensions, mdurl, MarkupSafe, lazy-object-proxy, itsdangerous, isort, idna, gunicorn, greenlet, dill, defusedxml, coverage, colorama, click, charset-normalizer, certifi, SQLAlchemy, requests, pinocchio, multidict, markdown-it-py, Jinja2, importlib-metadata, flake8, Faker, black, astroid, rich, requests-toolbelt, pylint, Flask, factory-boy, httpie, Flask-SQLAlchemy, Flask-Cors
+
+
+
+[lint : flake8] Successfully installed Faker-37.12.0 Flask-2.1.2 Flask-Cors-6.0.2 Flask-SQLAlchemy-2.5.1 Flask-Talisman-1.1.0 Jinja2-3.1.6 MarkupSafe-3.0.3 PySocks-1.7.1 Pygments-2.19.2 SQLAlchemy-1.4.46 Werkzeug-2.1.2 astroid-2.11.7 black-22.3.0 certifi-2025.11.12 charset-normalizer-3.4.4 click-8.1.8 colorama-0.4.6 coverage-6.3.2 defusedxml-0.7.1 dill-0.4.0 factory-boy-2.12.0 flake8-4.0.1 greenlet-3.2.4 gunicorn-20.1.0 honcho-1.1.0 httpie-3.2.1 idna-3.11 importlib-metadata-8.7.1 isort-5.13.2 itsdangerous-2.2.0 lazy-object-proxy-1.12.0 markdown-it-py-3.0.0 mccabe-0.6.1 mdurl-0.1.2 multidict-6.7.0 mypy-extensions-1.1.0 nose-1.3.7 pathspec-0.12.1 pinocchio-0.4.3 platformdirs-4.4.0 psycopg2-binary-2.9.3 pycodestyle-2.8.0 pyflakes-2.4.0 pylint-2.14.0 python-dotenv-0.20.0 requests-2.32.5 requests-toolbelt-1.0.0 rich-14.2.0 tomli-2.3.0 tomlkit-0.13.3 typing-extensions-4.15.0 tzdata-2025.3 urllib3-2.6.2 wrapt-1.17.3 zipp-3.23.0
+[lint : flake8] WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+[lint : flake8] 
+[lint : flake8] [notice] A new release of pip is available: 23.0.1 -> 25.3
+[lint : flake8] [notice] To update, run: pip install --upgrade pip
+[lint : flake8] ./tests/test_routes.py:190:5: E303 too many blank lines (2)
+[lint : flake8] ./tests/test_routes.py:206:5: E303 too many blank lines (2)
+[lint : flake8] ./tests/test_routes.py:237:1: E305 expected 2 blank lines after class or function definition, found 1
+[lint : flake8] 2     E303 too many blank lines (2)
+[lint : flake8] 1     E305 expected 2 blank lines after class or function definition, found 1
+[lint : flake8] 3
+
+failed to get logs for task lint : container step-flake8 has failed  : [{"key":"StartedAt","value":"2026-01-01T15:50:18.379Z","type":3}]
+(venv) theia:devops-capstone-project$ 
+(venv) theia:devops-capstone-project$ 
+(venv) theia:devops-capstone-project$ 
+(venv) theia:devops-capstone-project$ 
+
+
+
+
+
+
+
+
+tkn pipelinerun ls
+
+NAME                    STARTED         DURATION   STATUS
+cd-pipeline-run-7qknb   2 minutes ago   2m28s      Failed
+cd-pipeline-run-stjtq   4 minutes ago   42s        Succeeded
+(venv) theia:devops-capstone-project$ 
+tkn pipelinerun logs --last
+
+[init : remove] Removing all files from /workspace/source ...
+
+[clone : clone] + '[' false '=' true ]
+[clone : clone] + '[' false '=' true ]
+[clone : clone] + '[' false '=' true ]
+[clone : clone] + CHECKOUT_DIR=/workspace/output/
+[clone : clone] + '[' true '=' true ]
+[clone : clone] + cleandir
+[clone : clone] + '[' -d /workspace/output/ ]
+[clone : clone] + rm -rf '/workspace/output//*'
+[clone : clone] + rm -rf '/workspace/output//.[!.]*'
+[clone : clone] + rm -rf '/workspace/output//..?*'
+[clone : clone] + test -z 
+[clone : clone] + test -z 
+[clone : clone] + test -z 
+[clone : clone] + git config --global --add safe.directory /workspace/output
+[clone : clone] + /ko-app/git-init '-url=https://github.com/devmatt2022/devops-capstone-project.git' '-revision=main' '-refspec=' '-path=/workspace/output/' '-sslVerify=true' '-submodules=true' '-depth=1' '-sparseCheckoutDirectories='
+[clone : clone] {"level":"info","ts":1767282606.704407,"caller":"git/git.go:176","msg":"Successfully cloned https://github.com/devmatt2022/devops-capstone-project.git @ d6a3b8e514a79bd8629b09badf2a2a3b6035a8b6 (grafted, HEAD, origin/main) in path /workspace/output/"}
+[clone : clone] {"level":"info","ts":1767282607.462286,"caller":"git/git.go:215","msg":"Successfully initialized and updated submodules in path /workspace/output/"}
+[clone : clone] + cd /workspace/output/
+[clone : clone] + git rev-parse HEAD
+[clone : clone] + RESULT_SHA=d6a3b8e514a79bd8629b09badf2a2a3b6035a8b6
+[clone : clone] + EXIT_CODE=0
+[clone : clone] + '[' 0 '!=' 0 ]
+[clone : clone] + git log -1 '--pretty=%ct'
+[clone : clone] + RESULT_COMMITTER_DATE=1767281885
+[clone : clone] + printf '%s' 1767281885
+[clone : clone] + printf '%s' d6a3b8e514a79bd8629b09badf2a2a3b6035a8b6
+[clone : clone] + printf '%s' https://github.com/devmatt2022/devops-capstone-project.git
+
+task lint has failed: "step-flake8" exited with code 1
+[lint : flake8] Collecting Werkzeug==2.1.2
+[lint : flake8]   Downloading Werkzeug-2.1.2-py3-none-any.whl (224 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 224.9/224.9 kB 3.8 MB/s eta 0:00:00
+[lint : flake8] Collecting SQLAlchemy==1.4.46
+[lint : flake8]   Downloading SQLAlchemy-1.4.46-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.6 MB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 86.3 MB/s eta 0:00:00
+[lint : flake8] Collecting Flask==2.1.2
+[lint : flake8]   Downloading Flask-2.1.2-py3-none-any.whl (95 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 95.2/95.2 kB 50.9 MB/s eta 0:00:00
+[lint : flake8] Collecting Flask-SQLAlchemy==2.5.1
+[lint : flake8]   Downloading Flask_SQLAlchemy-2.5.1-py2.py3-none-any.whl (17 kB)
+[lint : flake8] Collecting psycopg2-binary==2.9.3
+[lint : flake8]   Downloading psycopg2_binary-2.9.3-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.0 MB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.0/3.0 MB 137.0 MB/s eta 0:00:00
+[lint : flake8] Collecting python-dotenv==0.20.0
+[lint : flake8]   Downloading python_dotenv-0.20.0-py3-none-any.whl (17 kB)
+[lint : flake8] Collecting Flask-Talisman
+[lint : flake8]   Downloading flask_talisman-1.1.0-py2.py3-none-any.whl (18 kB)
+[lint : flake8] Collecting Flask-Cors
+[lint : flake8]   Downloading flask_cors-6.0.2-py3-none-any.whl (13 kB)
+[lint : flake8] Collecting gunicorn==20.1.0
+[lint : flake8]   Downloading gunicorn-20.1.0-py3-none-any.whl (79 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79.5/79.5 kB 45.3 MB/s eta 0:00:00
+[lint : flake8] Collecting honcho==1.1.0
+[lint : flake8]   Downloading honcho-1.1.0-py2.py3-none-any.whl (21 kB)
+[lint : flake8] Collecting pylint==2.14.0
+[lint : flake8]   Downloading pylint-2.14.0-py3-none-any.whl (485 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 485.0/485.0 kB 108.7 MB/s eta 0:00:00
+[lint : flake8] Collecting flake8==4.0.1
+[lint : flake8]   Downloading flake8-4.0.1-py2.py3-none-any.whl (64 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 64.1/64.1 kB 36.7 MB/s eta 0:00:00
+[lint : flake8] Collecting black==22.3.0
+[lint : flake8]   Downloading black-22.3.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.5 MB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.5/1.5 MB 134.5 MB/s eta 0:00:00
+[lint : flake8] Collecting nose==1.3.7
+[lint : flake8]   Downloading nose-1.3.7-py3-none-any.whl (154 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 154.7/154.7 kB 66.1 MB/s eta 0:00:00
+[lint : flake8] Collecting pinocchio==0.4.3
+[lint : flake8]   Downloading pinocchio-0.4.3-py3-none-any.whl (12 kB)
+[lint : flake8] Collecting factory-boy==2.12.0
+[lint : flake8]   Downloading factory_boy-2.12.0-py2.py3-none-any.whl (36 kB)
+[lint : flake8] Collecting coverage==6.3.2
+[lint : flake8]   Downloading coverage-6.3.2-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (210 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 210.7/210.7 kB 49.3 MB/s eta 0:00:00
+[lint : flake8] Collecting httpie==3.2.1
+[lint : flake8]   Downloading httpie-3.2.1-py3-none-any.whl (124 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 125.0/125.0 kB 68.4 MB/s eta 0:00:00
+[lint : flake8] Collecting greenlet!=0.4.17
+[lint : flake8]   Downloading greenlet-3.2.4-cp39-cp39-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (582 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 582.8/582.8 kB 117.6 MB/s eta 0:00:00
+[lint : flake8] Collecting importlib-metadata>=3.6.0
+[lint : flake8]   Downloading importlib_metadata-8.7.1-py3-none-any.whl (27 kB)
+[lint : flake8] Collecting click>=8.0
+[lint : flake8]   Downloading click-8.1.8-py3-none-any.whl (98 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 98.2/98.2 kB 59.2 MB/s eta 0:00:00
+[lint : flake8] Collecting itsdangerous>=2.0
+[lint : flake8]   Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+[lint : flake8] Collecting Jinja2>=3.0
+[lint : flake8]   Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 134.9/134.9 kB 2.7 MB/s eta 0:00:00
+[lint : flake8] Requirement already satisfied: setuptools>=3.0 in /usr/local/lib/python3.9/site-packages (from gunicorn==20.1.0->-r requirements.txt (line 14)) (58.1.0)
+[lint : flake8] Collecting tomli>=1.1.0
+[lint : flake8]   Downloading tomli-2.3.0-py3-none-any.whl (14 kB)
+[lint : flake8] Collecting tomlkit>=0.10.1
+[lint : flake8]   Downloading tomlkit-0.13.3-py3-none-any.whl (38 kB)
+[lint : flake8] Collecting astroid<=2.12.0-dev0,>=2.11.5
+[lint : flake8]   Downloading astroid-2.11.7-py3-none-any.whl (251 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 251.2/251.2 kB 4.9 MB/s eta 0:00:00
+[lint : flake8] Collecting typing-extensions>=3.10.0
+[lint : flake8]   Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.6/44.6 kB 29.9 MB/s eta 0:00:00
+[lint : flake8] Collecting mccabe<0.8,>=0.6
+[lint : flake8]   Downloading mccabe-0.7.0-py2.py3-none-any.whl (7.3 kB)
+[lint : flake8] Collecting dill>=0.2
+[lint : flake8]   Downloading dill-0.4.0-py3-none-any.whl (119 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 119.7/119.7 kB 60.4 MB/s eta 0:00:00
+[lint : flake8] Collecting platformdirs>=2.2.0
+[lint : flake8]   Downloading platformdirs-4.4.0-py3-none-any.whl (18 kB)
+[lint : flake8] Collecting isort<6,>=4.2.5
+[lint : flake8]   Downloading isort-5.13.2-py3-none-any.whl (92 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 92.3/92.3 kB 48.2 MB/s eta 0:00:00
+[lint : flake8] Collecting pyflakes<2.5.0,>=2.4.0
+[lint : flake8]   Downloading pyflakes-2.4.0-py2.py3-none-any.whl (69 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.7/69.7 kB 41.9 MB/s eta 0:00:00
+[lint : flake8] Collecting mccabe<0.8,>=0.6
+[lint : flake8]   Downloading mccabe-0.6.1-py2.py3-none-any.whl (8.6 kB)
+[lint : flake8] Collecting pycodestyle<2.9.0,>=2.8.0
+[lint : flake8]   Downloading pycodestyle-2.8.0-py2.py3-none-any.whl (42 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 42.1/42.1 kB 29.4 MB/s eta 0:00:00
+[lint : flake8] Collecting pathspec>=0.9.0
+[lint : flake8]   Downloading pathspec-0.12.1-py3-none-any.whl (31 kB)
+[lint : flake8] Collecting mypy-extensions>=0.4.3
+[lint : flake8]   Downloading mypy_extensions-1.1.0-py3-none-any.whl (5.0 kB)
+[lint : flake8] Collecting colorama
+[lint : flake8]   Downloading colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+[lint : flake8] Collecting Faker>=0.7.0
+[lint : flake8]   Downloading faker-37.12.0-py3-none-any.whl (2.0 MB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 31.7 MB/s eta 0:00:00
+[lint : flake8] Collecting multidict>=4.7.0
+[lint : flake8]   Downloading multidict-6.7.0-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (239 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 239.2/239.2 kB 86.6 MB/s eta 0:00:00
+[lint : flake8] Collecting rich>=9.10.0
+[lint : flake8]   Downloading rich-14.2.0-py3-none-any.whl (243 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 243.4/243.4 kB 89.3 MB/s eta 0:00:00
+[lint : flake8] Collecting defusedxml>=0.6.0
+[lint : flake8]   Downloading defusedxml-0.7.1-py2.py3-none-any.whl (25 kB)
+[lint : flake8] Requirement already satisfied: pip in /usr/local/lib/python3.9/site-packages (from httpie==3.2.1->-r requirements.txt (line 31)) (23.0.1)
+[lint : flake8] Collecting requests-toolbelt>=0.9.1
+[lint : flake8]   Downloading requests_toolbelt-1.0.0-py2.py3-none-any.whl (54 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 54.5/54.5 kB 38.6 MB/s eta 0:00:00
+[lint : flake8] Collecting Pygments>=2.5.2
+[lint : flake8]   Downloading pygments-2.19.2-py3-none-any.whl (1.2 MB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 128.9 MB/s eta 0:00:00
+[lint : flake8] Collecting charset-normalizer>=2.0.0
+[lint : flake8]   Downloading charset_normalizer-3.4.4-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (153 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 154.0/154.0 kB 2.9 MB/s eta 0:00:00
+[lint : flake8] Collecting requests[socks]>=2.22.0
+[lint : flake8]   Downloading requests-2.32.5-py3-none-any.whl (64 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 64.7/64.7 kB 38.5 MB/s eta 0:00:00
+[lint : flake8] Collecting wrapt<2,>=1.11
+[lint : flake8]   Downloading wrapt-1.17.3-cp39-cp39-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (81 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 81.7/81.7 kB 48.7 MB/s eta 0:00:00
+[lint : flake8] Collecting lazy-object-proxy>=1.4.0
+[lint : flake8]   Downloading lazy_object_proxy-1.12.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (66 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 66.3/66.3 kB 39.6 MB/s eta 0:00:00
+[lint : flake8] Collecting tzdata
+[lint : flake8]   Downloading tzdata-2025.3-py2.py3-none-any.whl (348 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 348.5/348.5 kB 104.6 MB/s eta 0:00:00
+[lint : flake8] Collecting zipp>=3.20
+[lint : flake8]   Downloading zipp-3.23.0-py3-none-any.whl (10 kB)
+[lint : flake8] Collecting MarkupSafe>=2.0
+[lint : flake8]   Downloading markupsafe-3.0.3-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (20 kB)
+[lint : flake8] Collecting certifi>=2017.4.17
+[lint : flake8]   Downloading certifi-2025.11.12-py3-none-any.whl (159 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 159.4/159.4 kB 76.0 MB/s eta 0:00:00
+[lint : flake8] Collecting urllib3<3,>=1.21.1
+[lint : flake8]   Downloading urllib3-2.6.2-py3-none-any.whl (131 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 131.2/131.2 kB 63.3 MB/s eta 0:00:00
+[lint : flake8] Collecting idna<4,>=2.5
+[lint : flake8]   Downloading idna-3.11-py3-none-any.whl (71 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 71.0/71.0 kB 43.4 MB/s eta 0:00:00
+[lint : flake8] Collecting PySocks!=1.5.7,>=1.5.6
+[lint : flake8]   Downloading PySocks-1.7.1-py3-none-any.whl (16 kB)
+[lint : flake8] Collecting markdown-it-py>=2.2.0
+[lint : flake8]   Downloading markdown_it_py-3.0.0-py3-none-any.whl (87 kB)
+[lint : flake8]      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 87.5/87.5 kB 53.8 MB/s eta 0:00:00
+[lint : flake8] Collecting mdurl~=0.1
+[lint : flake8]   Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+[lint : flake8] Installing collected packages: nose, mccabe, honcho, Flask-Talisman, zipp, wrapt, Werkzeug, urllib3, tzdata, typing-extensions, tomlkit, tomli, python-dotenv, PySocks, Pygments, pyflakes, pycodestyle, psycopg2-binary, platformdirs, pathspec, mypy-extensions, mdurl, MarkupSafe, lazy-object-proxy, itsdangerous, isort, idna, gunicorn, greenlet, dill, defusedxml, coverage, colorama, click, charset-normalizer, certifi, SQLAlchemy, requests, pinocchio, multidict, markdown-it-py, Jinja2, importlib-metadata, flake8, Faker, black, astroid, rich, requests-toolbelt, pylint, Flask, factory-boy, httpie, Flask-SQLAlchemy, Flask-Cors
+[lint : flake8] Successfully installed Faker-37.12.0 Flask-2.1.2 Flask-Cors-6.0.2 Flask-SQLAlchemy-2.5.1 Flask-Talisman-1.1.0 Jinja2-3.1.6 MarkupSafe-3.0.3 PySocks-1.7.1 Pygments-2.19.2 SQLAlchemy-1.4.46 Werkzeug-2.1.2 astroid-2.11.7 black-22.3.0 certifi-2025.11.12 charset-normalizer-3.4.4 click-8.1.8 colorama-0.4.6 coverage-6.3.2 defusedxml-0.7.1 dill-0.4.0 factory-boy-2.12.0 flake8-4.0.1 greenlet-3.2.4 gunicorn-20.1.0 honcho-1.1.0 httpie-3.2.1 idna-3.11 importlib-metadata-8.7.1 isort-5.13.2 itsdangerous-2.2.0 lazy-object-proxy-1.12.0 markdown-it-py-3.0.0 mccabe-0.6.1 mdurl-0.1.2 multidict-6.7.0 mypy-extensions-1.1.0 nose-1.3.7 pathspec-0.12.1 pinocchio-0.4.3 platformdirs-4.4.0 psycopg2-binary-2.9.3 pycodestyle-2.8.0 pyflakes-2.4.0 pylint-2.14.0 python-dotenv-0.20.0 requests-2.32.5 requests-toolbelt-1.0.0 rich-14.2.0 tomli-2.3.0 tomlkit-0.13.3 typing-extensions-4.15.0 tzdata-2025.3 urllib3-2.6.2 wrapt-1.17.3 zipp-3.23.0
+[lint : flake8] WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+[lint : flake8] 
+[lint : flake8] [notice] A new release of pip is available: 23.0.1 -> 25.3
+[lint : flake8] [notice] To update, run: pip install --upgrade pip
+[lint : flake8] ./tests/test_routes.py:190:5: E303 too many blank lines (2)
+[lint : flake8] ./tests/test_routes.py:206:5: E303 too many blank lines (2)
+[lint : flake8] ./tests/test_routes.py:237:1: E305 expected 2 blank lines after class or function definition, found 1
+[lint : flake8] 2     E303 too many blank lines (2)
+[lint : flake8] 1     E305 expected 2 blank lines after class or function definition, found 1
+[lint : flake8] 3
+
+failed to get logs for task lint : container step-flake8 has failed  : [{"key":"StartedAt","value":"2026-01-01T15:50:18.379Z","type":3}]
+Tasks Completed: 3 (Failed: 1, Cancelled 0), Skipped: 0
+(venv) theia:devops-capstone-project$ 
+
+
