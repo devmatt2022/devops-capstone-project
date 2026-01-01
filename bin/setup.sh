@@ -5,7 +5,7 @@ echo "****************************************"
 
 echo "Installing Python 3.9 and Virtual Environment"
 sudo apt-get update
-sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python3.9 python3.9-venv
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y python3.9 python3.9-venv gh
 
 echo "Checking the Python version..."
 python3.9 --version
@@ -33,5 +33,8 @@ echo "****************************************"
 echo " Capstone Environment Setup Complete"
 echo "****************************************"
 echo ""
+echo "Setup GitHub Cli with `gh auth login`"
+echo ""
 echo "Use 'exit' to close this terminal and open a new one to initialize the environment"
 echo ""
+
