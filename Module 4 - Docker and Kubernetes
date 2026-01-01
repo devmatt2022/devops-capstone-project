@@ -1,0 +1,51 @@
+docker run --rm \
+    --link postgresql \
+    -p 8080:8080 \
+    -e DATABASE_URI=postgresql://postgres:postgres@postgresql:5432/postgres \
+    accounts
+
+
+docker tag accounts us.icr.io/$SN_ICR_NAMESPACE/accounts:1
+docker push us.icr.io/$SN_ICR_NAMESPACE/accounts:1
+
+
+
+(venv) theia:devops-capstone-project$ 
+docker run --rm \
+    --link postgresql \
+    -p 8080:8080 \
+    -e DATABASE_URI=postgresql://postgres:postgres@postgresql:5432/postgres \
+    accounts
+[2026-01-01 15:19:36 +0000] [1] [INFO] Starting gunicorn 20.1.0
+[2026-01-01 15:19:36 +0000] [1] [INFO] Listening at: http://0.0.0.0:8080 (1)
+[2026-01-01 15:19:36 +0000] [1] [INFO] Using worker: sync
+[2026-01-01 15:19:36 +0000] [7] [INFO] Booting worker with pid: 7
+[2026-01-01 15:19:37 +0000] [INFO] [log_handlers] Logging handler established
+[2026-01-01 15:19:37 +0000] [INFO] [__init__] **********************************************************************
+[2026-01-01 15:19:37 +0000] [INFO] [__init__] **********  A C C O U N T   S E R V I C E   R U N N I N G  ***********
+[2026-01-01 15:19:37 +0000] [INFO] [__init__] **********************************************************************
+[2026-01-01 15:19:37 +0000] [INFO] [__init__] Service initialized!
+[2026-01-01 15:19:47 +0000] [1] [INFO] Handling signal: winch
+[2026-01-01 15:19:52 +0000] [1] [INFO] Handling signal: winch
+^C[2026-01-01 15:20:01 +0000] [1] [INFO] Handling signal: int
+[2026-01-01 15:20:01 +0000] [INFO] [glogging] Worker exiting (pid: 7)
+[2026-01-01 15:20:01 +0000] [1] [INFO] Shutting down: Master
+(venv) theia:devops-capstone-project$ 
+docker tag accounts us.icr.io/$SN_ICR_NAMESPACE/accounts:1
+docker push us.icr.io/$SN_ICR_NAMESPACE/accounts:1
+The push refers to repository [us.icr.io/sn-labs-ahmetshenus/accounts]
+0e216775a1aa: Pushed 
+3de0ca3a7c44: Pushed 
+aaa6366af6d5: Pushed 
+e89228ec9e9c: Pushed 
+83b4edbfb659: Pushed 
+9e599118e168: Pushed 
+e228adf1886f: Pushed 
+fb5ccd0db472: Pushed 
+8d853c8add5d: Pushed 
+1: digest: sha256:d05cc43a6a99c430d2ad4eb575bf008b9cd832f7fb29342578653e9f79bbe0dc size: 2202
+(venv) theia:devops-capstone-project$ 
+
+
+kube-app-output
+{"name":"Account REST API Service","version":"1.0"}
